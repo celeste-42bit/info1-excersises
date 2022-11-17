@@ -1,4 +1,5 @@
-# lang racket
+(: calendar-date-ok? (calendar-date -> boolean))
+
 ; calendar-date record creating a date object with following attributes
 ; date-day -> Day
 ; date-mon -> Month
@@ -11,12 +12,14 @@
     (date-mon natural)
     (date-yea natural))
 
-(make-cd 17 11 2022)
+(define)
 
-(check-within (date-day) 1 30)
-(check-within (date-mon) 1 12)
-(check-within (date-yea) 0 2022)
+(check-within (date-day calendar-date) 1 30)
+(check-within (date-mon calendar-date) 1 12)
+(check-within (date-yea calendar-date) 0 2022)
 
-;(define calendar-date-ok?
-;    (lambda d
-;        (if )))
+(define calendar-date-ok?
+    (lambda (date)
+        (if (date-day calendar-date) >= 1 and (date-day calendar-date) <= 31
+            #t
+            #f)))
