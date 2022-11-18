@@ -1,27 +1,20 @@
-(: calendar-date-ok? (calendar-date -> boolean))
-
-; calendar-date record creating a date object with following attributes
-; date-day -> Day
-; date-mon -> Month
-; date-yea -> Year
+;; Die ersten drei Zeilen dieser Datei wurden von DrRacket eingefügt. Sie enthalten Metadaten
+;; über die Sprachebene dieser Datei in einer Form, die DrRacket verarbeiten kann.
+#reader(lib "beginner-reader.rkt" "deinprogramm" "sdp")((modname Blatt4) (read-case-sensitive #f) (teachpacks ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp"))) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp")))))
+; Ein Datum (calendar-date) besteht aus:
+; - Tag
+; - Monat
+; - Jahr
 
 (define-record calendar-date
-    make-calendar-date
-    calendar-date?
-    (date-day natural)
-    (date-mon natural)
-    (date-yea natural))
+  make-calendar-date
+  calendar-date-ok?
+  (date-day natural)
+  (date-month natural)
+  (date-year natural))
 
-(define first_date (make-calendar-date 12 11 2022))
-(define second_date (make-calendar-date 06 03 1921))
-(define illegal_date (make-calendar-date 69 666 420))
-
-(check-within (date-day calendar-date) 1 30)
-(check-within (date-mon calendar-date) 1 12)
-(check-within (date-yea calendar-date) 0 2023)
-
-(define calendar-date-ok?
-    (lambda (date)
-        (if (date-day calendar-date) >= 1 and (date-day calendar-date) <= 31
-            #t
-            #f)))
+(: calendar-date-ok? record -> boolean)
+(define claendar-date-ok?
+  (lambda (c)
+    ...
+    
