@@ -32,24 +32,28 @@
 (define-record sprinkler
   make-sprinkler
   sprinkler?
-  (range natural)
-  (effectivity real))
+  (sprinkler-range natural)
+  (sprinkler-effectivity real))
   
 ; Positionierung eines beliebigen Rasensprengers (placement) bestehend aus:
 ; - sprinkler
-; - X Coordinate
-; - Y Coordinate
-(: make-placement (sprinkler natural natural -> placement))
+; - position
+(: make-placement (sprinkler position -> placement))
 (define-record placement
   make-placement
   placement?
   (placement-sprinkler sprinkler)
-  (placement-x natural)
-  (placement-y natural))
+  (placement-position position))
 
 ; Aufgabe 2b: Distanzberechnung
 
 (: euclidean-distance (position position -> real))
 (define euclidean-distance
-  (lambda (distance1 distance2)
+  (lambda (position1 position2)
     (sqrt (+ (expt (- (position-x position1) (position-x position2)) 2) (expt (- (position-y position1) (position-y position2)) 2)))))
+
+; Aufgabe 2c: Irrigation funktion
+
+(: irrigate (flower placement -> flower))
+(define irrigate
+  (lambda (x y) ...))
