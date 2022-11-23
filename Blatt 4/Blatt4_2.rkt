@@ -68,21 +68,32 @@
 
 (: my-watered-flower (flower real -> flower))
 (define my-watered-flower
-  (lambda (a_flower a_placement) ; flower and placement can return the data needed for the calc
-    (draw-irrigation (make-flower (flower-name a_flower) (+ (flower-water a_flower) (* (sprinkler-effectivity (placement-sprinkler a_placement)) 100 (- 1 (/ (flower-distance a_flower a_placement) (sprinkler-range (placement-sprinkler a_placement)))))) (flower-position a_flower)) a_placement) ))
+  (lambda (start_flower a_flower a_placement) ; flower and placement can return the data needed for the calc
+    (draw-irrigation start_flower (make-flower (flower-name a_flower) (+ (flower-water a_flower) (* (sprinkler-effectivity (placement-sprinkler a_placement)) 100 (- 1 (/ (flower-distance a_flower a_placement) (sprinkler-range (placement-sprinkler a_placement)))))) (flower-position a_flower)) a_placement) ))
     
 
 (: irrigate (flower placement -> flower))
 (define irrigate
   (lambda (a_flower a_placement)
     (cond
-      ((in-range? a_flower a_placement) (my-watered-flower a_flower a_placement)) ; passing the flower in question and the sprinkler effectivity to the func
-      (else (draw-irrigation a_flower a_placement))))) ; if the flower is not in range, just return the unchanged flower
+      ((in-range? a_flower a_placement) (my-watered-flower a_flower a_flower a_placement)) ; passing the flower in question and the sprinkler effectivity to the func
+      (else (draw-irrigation a_flower a_flower a_placement))))) ; if the flower is not in range, just return the unchanged flower
 
-; Aufgabe 2d: Draw irrigation
-(: draw-irrigation (flower placement -> image))
-(define draw-irrigation
-  (lambda (a_flower a_placement)
+; Aufgabe 2d: Draw irrigation and helper functions
+(: flower-green (flower placement -> image))
+(define flower-green
+    (lambda (a_flower a_placement)
+    (place-image
+     (circle (sprinkler-range (placement-sprinkler a_placement)) "outline" "blue")
+     (position-x (placement-position a_placement)) (position-y (placement-position a_placement))
+     (place-image
+      (circle 4 "solid" "green")
+      (position-x (flower-position a_flower)) (position-y (flower-position a_flower))
+      (empty-scene 200 200 "white")))))
+
+(: flower-red (flower placement -> image))
+(define flower-red
+    (lambda (a_flower a_placement)
     (place-image
      (circle (sprinkler-range (placement-sprinkler a_placement)) "outline" "blue")
      (position-x (placement-position a_placement)) (position-y (placement-position a_placement))
@@ -90,11 +101,19 @@
       (circle 4 "solid" "red")
       (position-x (flower-position a_flower)) (position-y (flower-position a_flower))
       (empty-scene 200 200 "white")))))
-  
-(define my-flower (make-flower "Rose" 30 (make-position 52 90)))
-(define my-sprinkler (make-sprinkler 40 0.3))
-(define my-placement (make-placement my-sprinkler (make-position 50 72)))
+
+(: draw-irrigation (flower placement -> image))
+(define draw-irrigation
+  (lambda (start_flower a_flower a_placement)
+    (cond
+      ((< (flower-water start_flower) (flower-water a_flower)) (flower-green a_flower a_placement))
+      ((= (flower-water start_flower) (flower-water a_flower)) (flower-red a_flower a_placement))
+      (else "ERROR"))))
+    
+  ; --------------------------------------------------------------------------------------------------------
+(define my-flower (make-flower "Rose" 30 (make-position 30 90)))          ; FLOWER
+(define my-sprinkler (make-sprinkler 40 0.3))                             ; SPRINKLER
+(define my-placement (make-placement my-sprinkler (make-position 50 72))) ; SPRINKLER PLACEMENT
+  ; --------------------------------------------------------------------------------------------------------
 
 (irrigate my-flower my-placement)
-
-; flower "Rose" at pos (10 10) started at 30 water level and now has 57!
