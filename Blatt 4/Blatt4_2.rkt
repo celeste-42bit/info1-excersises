@@ -66,7 +66,7 @@
       ((< (flower-distance a_flower a_placement) (sprinkler-range (placement-sprinkler a_placement))) #true)
       (else #false))))
 
-(: my-watered-flower (flower real -> flower))
+(: my-watered-flower (flower flower real -> flower))
 (define my-watered-flower
   (lambda (start_flower a_flower a_placement) ; flower and placement can return the data needed for the calc
     (draw-irrigation start_flower (make-flower (flower-name a_flower) (+ (flower-water a_flower) (* (sprinkler-effectivity (placement-sprinkler a_placement)) 100 (- 1 (/ (flower-distance a_flower a_placement) (sprinkler-range (placement-sprinkler a_placement)))))) (flower-position a_flower)) a_placement) ))
@@ -102,7 +102,7 @@
       (position-x (flower-position a_flower)) (position-y (flower-position a_flower))
       (empty-scene 200 200 "white")))))
 
-(: draw-irrigation (flower placement -> image))
+(: draw-irrigation (flower flower placement -> image))
 (define draw-irrigation
   (lambda (start_flower a_flower a_placement)
     (cond
