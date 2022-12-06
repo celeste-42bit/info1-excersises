@@ -1,0 +1,35 @@
+;; Die ersten drei Zeilen dieser Datei wurden von DrRacket eingefügt. Sie enthalten Metadaten
+;; über die Sprachebene dieser Datei in einer Form, die DrRacket verarbeiten kann.
+#reader(lib "vanilla-reader.rkt" "deinprogramm" "sdp")((modname Blatt6_1) (read-case-sensitive #f) (teachpacks ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp"))) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp")))))
+#| Reduction of (my-not (< 42 41))
+
+⟦ (my-not (< 42 41)) ⟧⁰ [apply]
+⟦ (⟦ my-not ⟧¹ (< 42 41)) ⟧⁰ [eval_id]
+⟦ (⟦ lambda (x) (nand x x) ⟧¹ (< 42 41)) ⟧⁰ [apply_λ]
+⟦ (nand ⟦ (< 42 41) ⟧¹ ⟦ (< 42 41) ⟧¹) ⟧⁰ [apply]
+⟦ (nand ⟦ (⟦ < ⟧² 42 41) ⟧¹ ⟦ (⟦ < ⟧² 42 41) ⟧¹) ⟧⁰ [eval_id]
+⟦ (nand ⟦ (⟦ <#function:<> ⟧² 42 41) ⟧¹ ⟦ (⟦ <#function:<> ⟧² 42 41) ⟧¹) ⟧⁰ [apply_prim: <#function:<>]
+⟦ (nand ⟦ 42 < 41 ⟧¹ ⟦ 42 < 41 ⟧¹) ⟧⁰ [arithmetic_operation]
+⟦ (nand ⟦ #f ⟧¹ ⟦ #f ⟧¹) ⟧⁰ [apply_lit: #f]
+⟦ (nand #f #f) ⟧⁰ [apply]
+⟦ (⟦ nand ⟧¹ #f #f) ⟧⁰ [eval_id]
+⟦ (⟦ (lambda (x y) (if x (not y) #t) ⟧¹ #f #f) ⟧⁰ [apply_λ]
+⟦ (⟦ (if #f (not #f) #t) ⟧¹ #f #f) ⟧⁰ [apply]
+
+
+|#
+
+
+(: nand (boolean boolean -> boolean))
+(define nand
+  (lambda (x y)
+    (if x (not y) #t)))
+
+(: my-not (boolean -> boolean))
+(define my-not
+  (lambda (x)
+    (nand x x)))
+
+(my-not (< 42 41))
+
+<
