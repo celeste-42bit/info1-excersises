@@ -62,7 +62,10 @@
          ((cons y ys) (cons y (every-nth n (drop (- n 1) ys)))))))))
 
 ; Assignment 2 e
-#| "This is a signature for a list with 13 elements" |#
+#| "This should have been a signature for a list with 13 elements, but I didn't manage to find out how that works" |#
+
+; Assignment 2 f
+#| "The final check-isbn function which uses every-nth, mult and sum to validate ISBN's" |#
 
 (: check-isbn ((list-of natural) -> boolean))
 (check-expect (check-isbn (list 9 7 8 3 8 3 5 1 0 1 5 5 5)) #t) ; Die Macht der Abstraktion
