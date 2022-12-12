@@ -6,13 +6,13 @@
 
 (: sum ((list-of number) -> number))
 (check-expect (sum (list 21 21)) 42) ; of course this works... I used 42 to test it ¯\_(ツ)_/¯
-(check-expect (sum (list 42))    42) ; Hmmm 🤔 seems right?
-(check-expect (sum (list))        0) ; empty, very empty
+(check-expect (sum (list 42))    42)
+(check-expect (sum (list))        0)
 (define sum
   (lambda (xs)
     (cond
-      ((empty? xs) 0) ; is it empty?
-      ((cons? xs)  (+ (first xs) (sum (rest xs))))))) ; is it a cons-construct?
+      ((empty? xs) 0)
+      ((cons? xs)  (+ (first xs) (sum (rest xs)))))))
 
 
 ; Assignment 2 b
@@ -29,3 +29,51 @@
       (empty (list))
       ((cons y ys) (cons (* x y) (mult x ys))))))
 
+; Assignment 2 c
+#| "This funtion takes a list and cuts off n elements beginning from index 0" |#
+
+(: drop (natural (list-of %a) -> (list-of %a)))
+(check-expect (drop 3 (list "Thanks" "for all" "the" "fish")) (list "fish"))
+(check-expect (drop 0 (list "42" "69")) (list "42" "69"))
+(check-expect (drop 42 (list "Too" "Short")) (list))
+(define drop
+  (lambda (n xs)
+    (cond
+      ((= n 0) xs)
+      (else
+       (match xs
+         (empty (list))
+         ((cons y ys) (drop (- n 1) ys)))))))
+
+; Assignment 2 d
+#| "This function returns every n-th index of a list" |#
+(: every-nth (natural (list-of %a) -> (list-of %a)))
+(check-expect (every-nth 1 (list 1 2 3)) (list 1 2 3))
+(check-expect (every-nth 2 (list 5 4 3 2 1)) (list 5 3 1))
+(check-expect (every-nth 1 empty) empty)
+(check-expect (every-nth 0 (list"a" "b" "c")) empty)
+(define every-nth
+  (lambda (n xs)
+    (cond
+      ((= n 0) empty)
+      (else
+       (match xs
+         (empty empty)
+         ((cons y ys) (cons y (every-nth n (drop (- n 1) ys)))))))))
+
+; Assignment 2 e
+#| "This is a signature for a list with 13 elements" |#
+
+(: check-isbn ((list-of natural) -> boolean))
+(check-expect (check-isbn (list 9 7 8 3 8 3 5 1 0 1 5 5 5)) #t) ; Die Macht der Abstraktion
+(check-expect (check-isbn (list 9 7 8 0 3 4 5 3 4 1 4 6 4)) #t) ; Star Wars, Episode IV: A New Hope
+(check-expect (check-isbn (list 9 7 8 3 5 2 8 6 6 4 4 2 8)) #t) ; Das ist o.B.d.A. trivial!
+(define check-isbn
+  (lambda (isbn)
+    (if (= 0 (modulo 10
+                     (+ (sum (mult 3 ((every-nth 2 isbn)) ))) ; <---------- WROOOONG!
+                        (sum (every-nth 2 isbn)))))
+        #t
+        #f
+        )))
+  
