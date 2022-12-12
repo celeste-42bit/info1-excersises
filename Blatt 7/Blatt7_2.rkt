@@ -10,7 +10,7 @@
 (check-expect (sum (list))        0)
 (define sum
   (lambda (xs)
-    (cond
+    (cond ; i know, pattern matching also works... <3 code diversity :P
       ((empty? xs) 0)
       ((cons? xs)  (+ (first xs) (sum (rest xs)))))))
 
@@ -70,10 +70,7 @@
 (check-expect (check-isbn (list 9 7 8 3 5 2 8 6 6 4 4 2 8)) #t) ; Das ist o.B.d.A. trivial!
 (define check-isbn
   (lambda (isbn)
-    (if (= 0 (modulo 10
-                     (+ (sum (mult 3 ((every-nth 2 isbn)) ))) ; <---------- WROOOONG!
-                        (sum (every-nth 2 isbn)))))
-        #t
-        #f
-        )))
+    (= 0 (modulo
+          (+ (sum (mult 3 (every-nth 2 (rest isbn)) )) ; rest isbn shifts the grid, so it only gets evens
+             (sum (every-nth 2 isbn))) 10))))
   
