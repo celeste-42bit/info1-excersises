@@ -1,0 +1,29 @@
+;; Die ersten drei Zeilen dieser Datei wurden von DrRacket eingefügt. Sie enthalten Metadaten
+;; über die Sprachebene dieser Datei in einer Form, die DrRacket verarbeiten kann.
+#reader(lib "vanilla-reader.rkt" "deinprogramm" "sdp")((modname Blatt8_2) (read-case-sensitive #f) (teachpacks ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp"))) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp")))))
+; Assignment 2a) Program the foldl function with the given signature
+
+(: foldl (%b (%b %a -> %b) (list-of %a) -> %b))
+(define foldl
+  (lambda (z c xs)
+    (match xs
+      (empty z)
+      ((cons y ys) (c (foldl z c ys) y)))))
+
+; just a 'foldr' for reference:
+(: foldr (%b (%a %b -> %b) (list-of %a) -> %b))
+(define foldr
+  (lambda (z c xs)
+    (match xs
+      (empty z)
+      ((cons y ys) (c y (foldr z c ys))))))
+
+; Assignment 2b) Use foldl to implement the my-reverse function
+(: my-reverse ((list-of %a) -> (list-of %a)))
+(define my-reverse
+  (lambda (xs)
+    (match xs
+      (empty empty)
+      ((cons y ys) ...))))
+
+(my-reverse (list 1 2 3 4))
