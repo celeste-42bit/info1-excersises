@@ -1,0 +1,92 @@
+;; Die ersten drei Zeilen dieser Datei wurden von DrRacket eingefügt. Sie enthalten Metadaten
+;; über die Sprachebene dieser Datei in einer Form, die DrRacket verarbeiten kann.
+#reader(lib "vanilla-reader.rkt" "deinprogramm" "sdp")((modname Blatt9_2) (read-case-sensitive #f) (teachpacks ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp"))) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ((lib "image.rkt" "teachpack" "deinprogramm" "sdp") (lib "universe.rkt" "teachpack" "deinprogramm" "sdp")))))
+; Assignment 2
+
+(define tixy (signature (real natural natural natural -> real)))
+
+(: f tixy)
+(define f
+(lambda (t i x y) (* (- y 6) (- x 6))))
+
+
+(define GRIDSIZE 16)
+(define DOTSIZE 6)
+
+(define r-color
+  (lambda (r)
+
+    (if (> r 0)
+     "white"
+     "red")
+    ))
+
+(define absoluter-r
+  (lambda (r)
+  (cond
+    ((<= 0 (abs r) 1) (abs r) )
+    ((> (abs r) 1) 1)
+    )))
+(define skal
+  (lambda (x)
+    ( <= 0 (absoluter-r (abs x) ) DOTSIZE ) )) ;help 😦
+
+
+(define dotI
+  (lambda (d)
+  (circle (absoluter-r d) "solid" (r-color d)) )) ;prototyp dot
+
+
+(: dot( real -> image))
+
+(define dot
+  (lambda (d)
+  ( overlay (circle (expt (absoluter-r d) (* 2 DOTSIZE ) ) "solid" (r-color d)) 
+( rectangle (* 2 DOTSIZE ) (* 2 DOTSIZE ) "solid" "black"))
+))
+
+(dot 3)
+(dot -0.5)
+
+(dot 20)
+
+;b):
+
+(: grid (tixy real -> image))
+
+(define grid
+  (lambda (f t)
+
+   (fold
+    empty-image
+         (lambda(x xs)
+           (match x
+             (( cons x xs) (above (fold  empty-image beside  x ) xs)))) (dot-list f t 0 0))))
+
+
+#|
+(: grid (tixy real -> image))
+
+(define grid
+  (lambda (f t)
+  (place-image
+   (fold empty-image
+         (lambda(f)
+           (match f
+             ((tixy ))))
+
+    )(above  (dot t) (beside (dot t) (dot t) )(beside (dot t) (dot t) )) 
+                0
+                0
+                (square (* 2 DOTSIZE GRIDSIZE) "solid" "red")) ))|#
+
+;Hilfunktion dot-list,baut eine liste aus Punkten
+(: dot-list  ( tixy real  natural natural -> (list-of image)))
+(define dot-list
+  (lambda (f t x y)
+    (cond
+      ((= y GRIDSIZE) empty)
+      ((<  y GRIDSIZE ) (cons (dot (f t (+ (- x 1) ( * GRIDSIZE (- y 1))) x y)) (dot-list f t (+ x 1) y)))))) ; mit index des Punkts zur koordinanten x,y
+
+
+;setzt bilder des Gitters und der Punkte zusammen  zu einen gegebenen Zeitpunkt t ist f 2 3 2 )
