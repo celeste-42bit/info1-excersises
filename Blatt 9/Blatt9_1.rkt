@@ -5,13 +5,11 @@
 
 ; Input & Tests
 (: walls (list-of natural))
-(define walls (list 1 8 6 2 5 4 8 3 7))
+(define walls (list 1 8 6 2 5 4 8 3 7))  ; predefined walls from the sheet
 
 #| (check-expect (max-volume walls) 49) |#
 
 ; a) Function max-volume
 (: max-volume ((list-of natural) -> natural))
 (define max-volume
-  (lambda (walls)
-    (cons
-    ...))
+  (lambda (walls) ...))
